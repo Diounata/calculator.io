@@ -1,0 +1,16 @@
+{
+    "git.enabled": true,
+    "files.exclude": {
+        "node_modules": true,
+        ".vscode": true,
+        ".gitignore": true,
+        ".github": true,
+        ".gitattributes": true,
+        "package.json": true,
+        "package-lock.json": true,
+        "README.md": true,
+        ".next": true,
+        "LICENSE": true
+    },
+    "discord.enabled": true
+}
