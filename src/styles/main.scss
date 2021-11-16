@@ -7,3 +7,37 @@
   font-size: 1.5rem;
   font-weight: 700;
 }
+
+:root {
+  .dark-theme {
+    --main-background: hsl(222, 26%, 31%);
+    --screen-background: hsl(224, 36%, 15%);
+    --section-background: hsl(223, 31%, 20%);
+
+    --del-key-background: hsl(225, 21%, 49%);
+    --del-key-shadow: hsl(224, 28%, 35%);
+    --equal-key-background: hsl(6, 63%, 50%);
+    --equal-key-shadow: hsl(6, 70%, 34%);
+    --number-key-background: hsl(30, 25%, 89%);
+    --number-key-shadow: hsl(28, 16%, 65%);
+
+    --main-text: hsl(221, 14%, 31%);
+    --white-text: hsl(0, 0, 100%);
+  }
+
+  .light-theme {
+    --main-background: hsl(0, 0%, 90%);
+    --screen-background: hsl(0, 0%, 93%);
+    --section-background: hsl(0, 5%, 81%);
+
+    --del-key-background: hsl(185, 42%, 37%);
+    --del-key-shadow: hsl(185, 58%, 25%);
+    --equal-key-background: hsl(25, 98%, 40%);
+    --equal-key-shadow: hsl(25, 99%, 27%);
+    --number-key-background: hsl(45, 7%, 89%);
+    --number-key-shadow: hsl(35, 11%, 61%);
+
+    --main-text: hsl(60, 10%, 19%);
+    --white-text: hsl(0, 0, 100%);
+  }
+}
