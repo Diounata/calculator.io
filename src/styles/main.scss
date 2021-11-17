@@ -22,7 +22,7 @@
     --number-key-shadow: hsl(28, 16%, 65%);
 
     --main-text: hsl(221, 14%, 31%);
-    --white-text: hsl(0, 0, 100%);
+    --white-text: hsl(0, 0%, 100%);
   }
 
   .light-theme {
@@ -38,6 +38,6 @@
     --number-key-shadow: hsl(35, 11%, 61%);
 
     --main-text: hsl(60, 10%, 19%);
-    --white-text: hsl(0, 0, 100%);
+    --white-text: hsl(0, 0%, 100%);
   }
 }

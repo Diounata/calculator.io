@@ -1,0 +1,12 @@
+.resultContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  height: 4.5rem;
+  padding: 1rem;
+
+  background: var(--screen-background);
+  color: var(--white-text);
+  border-radius: 10px;
+}
