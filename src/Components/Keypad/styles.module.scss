@@ -4,7 +4,6 @@
   grid-template-rows: 1fr 1fr 1fr 1fr;
   gap: 0.6rem;
 
-  margin-top: 0.3rem;
   padding: 1rem;
 
   background: var(--section-background);
@@ -31,5 +30,9 @@
       background: var(--equal-key-background);
       border-color: var(--equal-key-shadow);
     }
+  }
+
+  @media (min-width: 380px) {
+    width: 360px;
   }
 }

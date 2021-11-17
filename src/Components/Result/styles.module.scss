@@ -10,4 +10,8 @@
   background: var(--screen-background);
   color: var(--result-text);
   border-radius: 15px;
+
+  @media (min-width: 380px) {
+    width: 360px;
+  }
 }
