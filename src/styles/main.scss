@@ -4,7 +4,7 @@
   box-sizing: border-box;
 
   font-family: 'Spartan', sans-serif;
-  color: var(--white-text);
+  color: var(--result-text);
   font-size: 1.5rem;
   font-weight: 700;
 }
@@ -23,6 +23,7 @@
     --number-key-shadow: hsl(28, 16%, 65%);
 
     --main-text: hsl(221, 14%, 31%);
+    --result-text: hsl(0, 0%, 100%);
     --white-text: hsl(0, 0%, 100%);
   }
 
@@ -39,6 +40,7 @@
     --number-key-shadow: hsl(35, 11%, 61%);
 
     --main-text: hsl(60, 10%, 19%);
+    --result-text: hsl(60, 10%, 19%);
     --white-text: hsl(0, 0%, 100%);
   }
 }

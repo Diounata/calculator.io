@@ -1,0 +1,13 @@
+.keyContainer {
+  display: grid;
+  place-items: center;
+
+  padding: 0.2rem;
+  background: var(--number-key-background);
+
+  border-bottom: 5px solid var(--number-key-shadow);
+  border-radius: 8px;
+
+  color: var(--main-text);
+  font-size: 0.9em;
+}

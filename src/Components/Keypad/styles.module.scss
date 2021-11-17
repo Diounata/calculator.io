@@ -1,0 +1,35 @@
+.keypadContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  gap: 0.6rem;
+
+  margin-top: 0.3rem;
+  padding: 1rem;
+
+  background: var(--section-background);
+  border-radius: 15px;
+
+  > div {
+    &:nth-child(4),
+    &:nth-child(17),
+    &:nth-child(18) {
+      grid-column: span 2;
+      padding: 0.5rem;
+
+      background: var(--del-key-background);
+      border-color: var(--del-key-shadow);
+      color: var(--white-text);
+      font-size: 0.55em;
+    }
+
+    &:nth-child(4) {
+      grid-column: span 1;
+    }
+
+    &:nth-child(18) {
+      background: var(--equal-key-background);
+      border-color: var(--equal-key-shadow);
+    }
+  }
+}
