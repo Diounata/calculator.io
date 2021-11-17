@@ -1,0 +1,59 @@
+@mixin theme-before {
+  width: 0.9rem;
+  text-align: center;
+  position: absolute;
+  top: 20px;
+
+  font-size: 0.38em;
+}
+
+.headerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin: 0.8rem 0;
+
+  .themeContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+
+    h3 {
+      font-size: 0.38em;
+    }
+
+    > div {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.1rem;
+
+      background: var(--screen-background);
+      border-radius: 50px;
+      padding: 0.25rem 0.5rem;
+
+      :nth-child(1)::before {
+        content: '1';
+        @include theme-before();
+      }
+
+      :nth-child(2)::before {
+        content: '2';
+        @include theme-before();
+      }
+
+      :nth-child(3)::before {
+        content: '3';
+        @include theme-before();
+      }
+
+      .selected {
+        width: 0.75rem;
+        height: 0.75rem;
+
+        background: var(--equal-key-background);
+        border-radius: 20px;
+      }
+    }
+  }
+}
