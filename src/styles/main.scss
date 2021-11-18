@@ -7,11 +7,14 @@
   color: var(--result-text);
   font-size: 1.5rem;
   font-weight: 700;
+  user-select: none;
 
   -webkit-tap-highlight-color: transparent;
 }
 
 :root {
+  --white-text: hsl(0, 0%, 100%);
+
   .dark-theme {
     --main-background: hsl(222, 26%, 31%);
     --screen-background: hsl(224, 36%, 15%);
@@ -26,7 +29,7 @@
 
     --main-text: hsl(221, 14%, 31%);
     --result-text: hsl(0, 0%, 100%);
-    --white-text: hsl(0, 0%, 100%);
+    --equal-text: var(--white-text);
   }
 
   .light-theme {
@@ -43,6 +46,23 @@
 
     --main-text: hsl(60, 10%, 19%);
     --result-text: hsl(60, 10%, 19%);
-    --white-text: hsl(0, 0%, 100%);
+    --equal-text: var(--white-text);
+  }
+
+  .alt-theme {
+    --main-background: hsl(268, 75%, 9%);
+    --screen-background: hsl(268, 71%, 12%);
+    --section-background: hsl(268, 71%, 12%);
+
+    --del-key-background: hsl(281, 89%, 26%);
+    --del-key-shadow: hsl(285, 91%, 52%);
+    --equal-key-background: hsl(176, 100%, 44%);
+    --equal-key-shadow: hsl(177, 92%, 70%);
+    --number-key-background: hsl(268, 47%, 21%);
+    --number-key-shadow: hsl(290, 70%, 36%);
+
+    --main-text: hsl(52, 100%, 62%);
+    --result-text: hsl(52, 100%, 62%);
+    --equal-text: hsl(198, 20%, 13%);
   }
 }
