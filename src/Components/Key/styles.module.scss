@@ -10,4 +10,12 @@
 
   color: var(--main-text);
   font-size: 0.9em;
+
+  cursor: pointer;
+  user-select: none;
+  transition: border 50ms;
+
+  &:hover {
+    border: none;
+  }
 }
