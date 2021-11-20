@@ -2,25 +2,31 @@ import styles from './styles.module.scss';
 
 import { useMath } from 'Contexts/MathContext';
 
+type MathOperatorsProps = '+' | '-' | '×' | '÷' | null;
+
 interface KeyProps {
   children: string;
   number?: number;
-  actionType?: 'number' | 'delete' | 'reset' | 'undefined';
+  operator?: MathOperatorsProps;
+  actionType?: 'number' | 'delete' | 'reset' | 'operator' | 'undefined';
 }
 
-export default function Key({ children, actionType = 'number', number = 0 }: KeyProps) {
-  const { addNumber, deleteNumber, resetNumber } = useMath();
+export default function Key({ children, actionType = 'number', number = 0, operator = null }: KeyProps) {
+  const { addNumber, updateCurrentMathOperator, deleteNumber, resetOperation } = useMath();
 
   function buttonAction() {
     switch (actionType) {
       case 'number':
         addNumber(number);
         break;
+      case 'operator':
+        updateCurrentMathOperator(operator);
+        break;
       case 'delete':
         deleteNumber();
         break;
       case 'reset':
-        resetNumber();
+        resetOperation();
         break;
       default:
         return;
