@@ -1,11 +1,14 @@
 import App from 'Components/App';
 
 import { ThemeProvider } from 'Contexts/ThemeContext';
+import { MathProvider } from 'Contexts/MathContext';
 
 export default function Home() {
   return (
-    <ThemeProvider>
-      <App />
-    </ThemeProvider>
+    <MathProvider>
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
+    </MathProvider>
   );
 }

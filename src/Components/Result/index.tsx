@@ -1,5 +1,9 @@
 import styles from './styles.module.scss';
 
+import { useMath } from 'Contexts/MathContext';
+
 export default function Result() {
-  return <div className={styles.resultContainer}>399,981</div>;
+  const { currentNumber, formatNumber } = useMath();
+
+  return <div className={styles.resultContainer}>{formatNumber(currentNumber)}</div>;
 }
