@@ -26,7 +26,7 @@ export default function Keypad() {
       <Key actionType="operator" operator='×'>x</Key>
 
       <Key actionType="reset">RESET</Key>
-      <Key actionType="undefined">=</Key>
+      <Key actionType="result">=</Key>
     </div>
   );
 }

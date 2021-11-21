@@ -3,20 +3,13 @@ import styles from './styles.module.scss';
 import { useMath } from 'Contexts/MathContext';
 
 export default function Result() {
-  const { previousNumber, currentNumber, currentMathOperator, isCurrentNumberNegative, formatNumber } =
-    useMath();
-
-  function formatPreviousNumber(): string {
-    const numberString = previousNumber < 0 ? `(${previousNumber})` : `${previousNumber}`;
-
-    return numberString;
-  }
+  const { previousNumber, currentNumber, lastUsedMathOperator, isCurrentNumberNegative, formatNumber } = useMath();
 
   return (
     <div className={styles.resultContainer}>
       <div>
-        <span>{currentMathOperator}</span>
-        {previousNumber !== 0 && formatPreviousNumber()}
+        {previousNumber !== null && previousNumber}
+        <span>{previousNumber !== null && lastUsedMathOperator}</span>
       </div>
 
       <div>

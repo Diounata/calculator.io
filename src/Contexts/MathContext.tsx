@@ -6,26 +6,31 @@ interface ChildrenProps {
   children: ReactNode;
 }
 
-type MathOperatorsProps = '+' | '-' | '×' | '÷' | null;
+type MathOperatorsSignProps = '+' | '-' | '×' | '÷' | null;
+type MathOperatorsNameProps = 'sum' | 'subtract' | 'multiply' | 'divide' | 'error';
 
 interface ContextProps {
-  previousNumber: number;
+  previousNumber: number | null;
   currentNumber: number;
-  currentMathOperator: MathOperatorsProps;
+  currentMathOperator: MathOperatorsSignProps;
+  lastUsedMathOperator: MathOperatorsSignProps;
   isCurrentNumberNegative: boolean;
 
   formatNumber(number: number): string;
   addNumber(number: number): void;
+  getFinalResult(): void;
   deleteNumber(): void;
   resetOperation(): void;
-  updateCurrentMathOperator(value: MathOperatorsProps): void;
+  updateCurrentMathOperator(value: MathOperatorsSignProps): void;
 }
 
 export function MathProvider({ children }: ChildrenProps) {
-  const [previousNumber, setPreviousNumber] = useState<number>(10);
+  const [previousNumber, setPreviousNumber] = useState<number | null>(null);
   const [currentNumber, setCurrentNumber] = useState<number>(0);
-  const [currentMathOperator, setCurrentMathOperator] = useState<MathOperatorsProps>(null);
+  const [currentMathOperator, setCurrentMathOperator] = useState<MathOperatorsSignProps>(null);
+  const [lastUsedMathOperator, setLastUsedMathOperator] = useState<MathOperatorsSignProps>(null);
   const [isCurrentNumberNegative, setIsCurrentNumberNegative] = useState(false);
+  const [isCountFinished, setIsCountFinished] = useState(false);
 
   function formatNumber(number: number): string {
     const numberString = new Intl.NumberFormat().format(number);
@@ -36,7 +41,19 @@ export function MathProvider({ children }: ChildrenProps) {
   function addNumber(number: number): void {
     const newNumber = Number(String(currentNumber) + number);
 
+    if (isCountFinished) setIsCountFinished(false);
+
     setCurrentNumber(newNumber);
+  }
+
+  function getFinalResult(): void {
+    const finalResult = calcPreviousNumberByCurrentNumber();
+
+    setIsCountFinished(true);
+    setCurrentNumber(finalResult);
+    setPreviousNumber(null);
+    setCurrentMathOperator(null);
+    setIsCurrentNumberNegative(false);
   }
 
   function deleteNumber(): void {
@@ -46,13 +63,15 @@ export function MathProvider({ children }: ChildrenProps) {
   }
 
   function resetOperation(): void {
-    setPreviousNumber(0);
+    setPreviousNumber(null);
     setCurrentNumber(0);
     setCurrentMathOperator(null);
     setIsCurrentNumberNegative(false);
   }
 
-  function updateCurrentMathOperator(value: MathOperatorsProps): void {
+  function updateCurrentMathOperator(value: MathOperatorsSignProps): void {
+    if (isCountFinished) setIsCountFinished(false);
+
     if (currentNumber === 0 && value === '-') {
       setIsCurrentNumberNegative(prev => !prev);
     } else setCurrentMathOperator(value);
@@ -64,14 +83,50 @@ export function MathProvider({ children }: ChildrenProps) {
     return number;
   }
 
+  function getMathOperatorName(): MathOperatorsNameProps {
+    switch (lastUsedMathOperator) {
+      case '+':
+        return 'sum';
+      case '-':
+        return 'subtract';
+      case '×':
+        return 'multiply';
+      case '÷':
+        return 'divide';
+      default:
+        return 'error';
+    }
+  }
+
+  function calcPreviousNumberByCurrentNumber(): number {
+    const latestNumber = getCurrentNumberWithItsOperator();
+
+    if (previousNumber === null) return latestNumber;
+    else {
+      const mathOperator = getMathOperatorName();
+
+      const operation = {
+        sum: previousNumber + latestNumber,
+        subtract: previousNumber - latestNumber,
+        multiply: previousNumber * latestNumber,
+        divide: previousNumber / latestNumber,
+        error: -1,
+      };
+
+      return operation[mathOperator];
+    }
+  }
+
   useEffect(() => {
-    if (currentNumber === 0) return;
+    if (currentMathOperator === null || currentNumber === 0 || isCountFinished) return;
 
-    const number = getCurrentNumberWithItsOperator();
+    const newPreviousNumber = calcPreviousNumberByCurrentNumber();
 
-    setPreviousNumber(number);
+    setPreviousNumber(newPreviousNumber);
     setIsCurrentNumberNegative(false);
     setCurrentNumber(0);
+    setLastUsedMathOperator(currentMathOperator);
+    setCurrentMathOperator(null);
   }, [currentMathOperator]);
 
   return (
@@ -80,9 +135,11 @@ export function MathProvider({ children }: ChildrenProps) {
         previousNumber,
         currentNumber,
         currentMathOperator,
+        lastUsedMathOperator,
         isCurrentNumberNegative,
         formatNumber,
         addNumber,
+        getFinalResult,
         deleteNumber,
         resetOperation,
         updateCurrentMathOperator,
