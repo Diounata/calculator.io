@@ -6,8 +6,9 @@
   gap: 1rem;
 
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   padding: 0.8rem;
+  padding-top: 1.6rem;
 
   background: var(--main-background);
 }
