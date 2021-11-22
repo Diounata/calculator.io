@@ -20,7 +20,7 @@ export default function Keypad() {
       <Key number={3}>3</Key>
       <Key actionType="operator" operator='-'>-</Key>
 
-      <Key actionType="undefined">.</Key>
+      <Key actionType="period">.</Key>
       <Key number={0}>0</Key>
       <Key actionType="operator" operator='÷'>/</Key>
       <Key actionType="operator" operator='×'>x</Key>

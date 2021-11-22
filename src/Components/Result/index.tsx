@@ -3,7 +3,15 @@ import styles from './styles.module.scss';
 import { useMath } from 'Contexts/MathContext';
 
 export default function Result() {
-  const { previousNumber, currentNumber, lastUsedMathOperator, isCurrentNumberNegative, formatNumber } = useMath();
+  const {
+    previousNumber,
+    currentNumber,
+    currentDecimalNumber,
+    lastUsedMathOperator,
+    isCurrentNumberNegative,
+    isCurrentNumberDecimal,
+    formatNumber,
+  } = useMath();
 
   return (
     <div className={styles.resultContainer}>
@@ -15,6 +23,7 @@ export default function Result() {
       <div>
         {isCurrentNumberNegative && '-'}
         {formatNumber(currentNumber)}
+        {isCurrentNumberDecimal && `.${currentDecimalNumber}`}
       </div>
     </div>
   );

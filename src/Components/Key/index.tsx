@@ -8,16 +8,26 @@ interface KeyProps {
   children: string;
   number?: number;
   operator?: MathOperatorsProps;
-  actionType?: 'number' | 'delete' | 'reset' | 'operator' | 'result' | 'undefined';
+  actionType?: 'number' | 'delete' | 'reset' | 'operator' | 'result' | 'period';
 }
 
 export default function Key({ children, actionType = 'number', number = 0, operator = null }: KeyProps) {
-  const { addNumber, updateCurrentMathOperator, deleteNumber, resetOperation, getFinalResult } = useMath();
+  const {
+    addNumber,
+    updateCurrentMathOperator,
+    toggleIsCurrentNumberDecimal,
+    deleteNumber,
+    resetOperation,
+    getFinalResult,
+  } = useMath();
 
   function buttonAction() {
     switch (actionType) {
       case 'number':
         addNumber(number);
+        break;
+      case 'period':
+        toggleIsCurrentNumberDecimal(true);
         break;
       case 'operator':
         updateCurrentMathOperator(operator);

@@ -12,9 +12,11 @@ type MathOperatorsNameProps = 'sum' | 'subtract' | 'multiply' | 'divide' | 'erro
 interface ContextProps {
   previousNumber: number | null;
   currentNumber: number;
+  currentDecimalNumber: number | null;
   currentMathOperator: MathOperatorsSignProps;
   lastUsedMathOperator: MathOperatorsSignProps;
   isCurrentNumberNegative: boolean;
+  isCurrentNumberDecimal: boolean;
 
   formatNumber(number: number): string;
   addNumber(number: number): void;
@@ -22,14 +24,17 @@ interface ContextProps {
   deleteNumber(): void;
   resetOperation(): void;
   updateCurrentMathOperator(value: MathOperatorsSignProps): void;
+  toggleIsCurrentNumberDecimal(value: boolean): void;
 }
 
 export function MathProvider({ children }: ChildrenProps) {
   const [previousNumber, setPreviousNumber] = useState<number | null>(null);
   const [currentNumber, setCurrentNumber] = useState<number>(0);
+  const [currentDecimalNumber, setCurrentDecimalNumber] = useState<number | null>(null);
   const [currentMathOperator, setCurrentMathOperator] = useState<MathOperatorsSignProps>(null);
   const [lastUsedMathOperator, setLastUsedMathOperator] = useState<MathOperatorsSignProps>(null);
   const [isCurrentNumberNegative, setIsCurrentNumberNegative] = useState(false);
+  const [isCurrentNumberDecimal, setIsCurrentNumberDecimal] = useState(false);
   const [isCountFinished, setIsCountFinished] = useState(false);
 
   function formatNumber(number: number): string {
@@ -39,11 +44,23 @@ export function MathProvider({ children }: ChildrenProps) {
   }
 
   function addNumber(number: number): void {
-    const newNumber = Number(String(currentNumber) + number);
+    function concatNumber(number2: number): number {
+      return Number(String(number2) + number);
+    }
+
+    const newCurrentNumber = concatNumber(currentNumber);
 
     if (isCountFinished) setIsCountFinished(false);
 
-    setCurrentNumber(newNumber);
+    if (isCurrentNumberDecimal) {
+      if (currentDecimalNumber === null) setCurrentDecimalNumber(0);
+
+      if (currentDecimalNumber !== null) {
+        const newCurrentDecimalNumber = concatNumber(currentDecimalNumber);
+
+        setCurrentDecimalNumber(newCurrentDecimalNumber);
+      }
+    } else setCurrentNumber(newCurrentNumber);
   }
 
   function getFinalResult(): void {
@@ -63,10 +80,12 @@ export function MathProvider({ children }: ChildrenProps) {
   }
 
   function resetOperation(): void {
+    setCurrentMathOperator(null);
     setPreviousNumber(null);
     setCurrentNumber(0);
-    setCurrentMathOperator(null);
+    setCurrentDecimalNumber(null);
     setIsCurrentNumberNegative(false);
+    setIsCurrentNumberDecimal(false);
   }
 
   function updateCurrentMathOperator(value: MathOperatorsSignProps): void {
@@ -77,8 +96,21 @@ export function MathProvider({ children }: ChildrenProps) {
     } else setCurrentMathOperator(value);
   }
 
+  function toggleIsCurrentNumberDecimal(value: boolean): void {
+    setCurrentDecimalNumber(0);
+    setIsCurrentNumberDecimal(value);
+  }
+
   function getCurrentNumberWithItsOperator(): number {
-    const number = isCurrentNumberNegative ? currentNumber * -1 : currentNumber;
+    let convertedCurrentDecimalNumber = 0;
+
+    if (currentDecimalNumber !== null) {
+      const decimalNumberLength = Number(String(currentDecimalNumber).length);
+      convertedCurrentDecimalNumber = currentDecimalNumber / 10 ** decimalNumberLength;
+    }
+
+    const newCurrentNumber = currentNumber + convertedCurrentDecimalNumber;
+    const number = isCurrentNumberNegative ? newCurrentNumber * -1 : newCurrentNumber;
 
     return number;
   }
@@ -124,9 +156,11 @@ export function MathProvider({ children }: ChildrenProps) {
 
     setPreviousNumber(newPreviousNumber);
     setIsCurrentNumberNegative(false);
-    setCurrentNumber(0);
+    setIsCurrentNumberDecimal(false);
     setLastUsedMathOperator(currentMathOperator);
+    setCurrentNumber(0);
     setCurrentMathOperator(null);
+    setCurrentDecimalNumber(null);
   }, [currentMathOperator]);
 
   return (
@@ -134,15 +168,18 @@ export function MathProvider({ children }: ChildrenProps) {
       value={{
         previousNumber,
         currentNumber,
+        currentDecimalNumber,
         currentMathOperator,
         lastUsedMathOperator,
         isCurrentNumberNegative,
+        isCurrentNumberDecimal,
         formatNumber,
         addNumber,
         getFinalResult,
         deleteNumber,
         resetOperation,
         updateCurrentMathOperator,
+        toggleIsCurrentNumberDecimal,
       }}
     >
       {children}
