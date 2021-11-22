@@ -8,7 +8,7 @@ export default function Result() {
   return (
     <div className={styles.resultContainer}>
       <div>
-        {previousNumber !== null && previousNumber}
+        {previousNumber !== null && formatNumber(previousNumber)}
         <span>{previousNumber !== null && lastUsedMathOperator}</span>
       </div>
 
