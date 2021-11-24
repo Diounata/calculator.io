@@ -15,7 +15,7 @@ export default function Result() {
 
   function getDecimalNumber() {
     if (isCurrentNumberDecimal) {
-      if (currentDecimalNumber === null) return;
+      if (!currentDecimalNumber) return;
 
       return currentDecimalNumber;
     }
