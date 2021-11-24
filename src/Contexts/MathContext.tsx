@@ -12,7 +12,7 @@ type MathOperatorsNameProps = 'sum' | 'subtract' | 'multiply' | 'divide' | 'erro
 interface ContextProps {
   previousNumber: number | null;
   currentNumber: number;
-  currentDecimalNumber: number | null;
+  currentDecimalNumber: string | null;
   currentMathOperator: MathOperatorsSignProps;
   lastUsedMathOperator: MathOperatorsSignProps;
   isCurrentNumberNegative: boolean;
@@ -30,7 +30,7 @@ interface ContextProps {
 export function MathProvider({ children }: ChildrenProps) {
   const [previousNumber, setPreviousNumber] = useState<number | null>(null);
   const [currentNumber, setCurrentNumber] = useState<number>(0);
-  const [currentDecimalNumber, setCurrentDecimalNumber] = useState<number | null>(null);
+  const [currentDecimalNumber, setCurrentDecimalNumber] = useState<string | null>(null);
   const [currentMathOperator, setCurrentMathOperator] = useState<MathOperatorsSignProps>(null);
   const [lastUsedMathOperator, setLastUsedMathOperator] = useState<MathOperatorsSignProps>(null);
   const [isCurrentNumberNegative, setIsCurrentNumberNegative] = useState(false);
@@ -44,23 +44,20 @@ export function MathProvider({ children }: ChildrenProps) {
   }
 
   function addNumber(number: number): void {
-    function concatNumber(number2: number): number {
-      return Number(String(number2) + number);
-    }
-
-    const newCurrentNumber = concatNumber(currentNumber);
-
     if (isCountFinished) setIsCountFinished(false);
 
     if (isCurrentNumberDecimal) {
-      if (currentDecimalNumber === null) setCurrentDecimalNumber(0);
-
-      if (currentDecimalNumber !== null) {
-        const newCurrentDecimalNumber = concatNumber(currentDecimalNumber);
+      if (currentDecimalNumber === null) setCurrentDecimalNumber(String(number));
+      else {
+        const newCurrentDecimalNumber = currentDecimalNumber + String(number);
 
         setCurrentDecimalNumber(newCurrentDecimalNumber);
       }
-    } else setCurrentNumber(newCurrentNumber);
+    } else {
+      const newCurrentNumber = Number(String(currentNumber) + number);
+
+      setCurrentNumber(newCurrentNumber);
+    }
   }
 
   function getFinalResult(): void {
@@ -70,13 +67,26 @@ export function MathProvider({ children }: ChildrenProps) {
     setCurrentNumber(finalResult);
     setPreviousNumber(null);
     setCurrentMathOperator(null);
+    setCurrentDecimalNumber(null);
     setIsCurrentNumberNegative(false);
+    setIsCurrentNumberDecimal(false);
   }
 
   function deleteNumber(): void {
-    const newNumber = Math.floor(currentNumber / 10);
+    if (isCurrentNumberDecimal && currentDecimalNumber !== null) {
+      if (currentDecimalNumber === '') resetCurrentDecimalNumber();
+      else {
+        let decimalNumberArray = Array.from(currentDecimalNumber);
+        decimalNumberArray.pop();
+        const newDecimalNumber = decimalNumberArray.join('');
 
-    setCurrentNumber(newNumber);
+        setCurrentDecimalNumber(String(newDecimalNumber));
+      }
+    } else {
+      const newNumber = Math.floor(currentNumber / 10);
+
+      setCurrentNumber(newNumber);
+    }
   }
 
   function resetOperation(): void {
@@ -85,6 +95,11 @@ export function MathProvider({ children }: ChildrenProps) {
     setCurrentNumber(0);
     setCurrentDecimalNumber(null);
     setIsCurrentNumberNegative(false);
+    setIsCurrentNumberDecimal(false);
+  }
+
+  function resetCurrentDecimalNumber(): void {
+    setCurrentDecimalNumber(null);
     setIsCurrentNumberDecimal(false);
   }
 
@@ -97,7 +112,6 @@ export function MathProvider({ children }: ChildrenProps) {
   }
 
   function toggleIsCurrentNumberDecimal(value: boolean): void {
-    setCurrentDecimalNumber(0);
     setIsCurrentNumberDecimal(value);
   }
 
@@ -106,7 +120,7 @@ export function MathProvider({ children }: ChildrenProps) {
 
     if (currentDecimalNumber !== null) {
       const decimalNumberLength = Number(String(currentDecimalNumber).length);
-      convertedCurrentDecimalNumber = currentDecimalNumber / 10 ** decimalNumberLength;
+      convertedCurrentDecimalNumber = Number(currentDecimalNumber) / 10 ** decimalNumberLength;
     }
 
     const newCurrentNumber = currentNumber + convertedCurrentDecimalNumber;
@@ -156,11 +170,10 @@ export function MathProvider({ children }: ChildrenProps) {
 
     setPreviousNumber(newPreviousNumber);
     setIsCurrentNumberNegative(false);
-    setIsCurrentNumberDecimal(false);
     setLastUsedMathOperator(currentMathOperator);
     setCurrentNumber(0);
     setCurrentMathOperator(null);
-    setCurrentDecimalNumber(null);
+    resetCurrentDecimalNumber();
   }, [currentMathOperator]);
 
   return (

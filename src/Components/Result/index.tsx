@@ -13,6 +13,14 @@ export default function Result() {
     formatNumber,
   } = useMath();
 
+  function getDecimalNumber() {
+    if (isCurrentNumberDecimal) {
+      if (currentDecimalNumber === null) return;
+
+      return currentDecimalNumber;
+    }
+  }
+
   return (
     <div className={styles.resultContainer}>
       <div>
@@ -23,7 +31,8 @@ export default function Result() {
       <div>
         {isCurrentNumberNegative && '-'}
         {formatNumber(currentNumber)}
-        {isCurrentNumberDecimal && `.${currentDecimalNumber}`}
+        {isCurrentNumberDecimal && '.'}
+        {getDecimalNumber()}
       </div>
     </div>
   );
