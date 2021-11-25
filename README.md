@@ -30,7 +30,6 @@ A simple React.js calculator.
 This project was made using the following techs:
 
 - [React.js](https://reactjs.org/)
-- [React Icons](https://react-icons.github.io/react-icons/)
 - [Next.js](https://nextjs.org/)
 - [Typescript](https://www.typescriptlang.org/)
 - [Sass](https://sass-lang.com/)
