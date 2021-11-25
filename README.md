@@ -44,7 +44,7 @@ This project was made using the following techs:
 
 In this project I practiced:
 
-- Typescript strict mode;
+- Typescript strict mode
 - Complex logic coding
 - Mobile-first app
 
