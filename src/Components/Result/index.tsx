@@ -10,6 +10,7 @@ export default function Result() {
     lastUsedMathOperator,
     isCurrentNumberNegative,
     isCurrentNumberDecimal,
+    hasBugResult,
     formatNumber,
   } = useMath();
 
@@ -30,7 +31,7 @@ export default function Result() {
 
       <div>
         {isCurrentNumberNegative && '-'}
-        {formatNumber(currentNumber)}
+        {hasBugResult ? <span>Can't divide by 0</span> : formatNumber(currentNumber)}
         {isCurrentNumberDecimal && '.'}
         {getDecimalNumber()}
       </div>

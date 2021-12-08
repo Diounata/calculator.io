@@ -17,6 +17,7 @@ interface ContextProps {
   lastUsedMathOperator: MathOperatorsSignProps;
   isCurrentNumberNegative: boolean;
   isCurrentNumberDecimal: boolean;
+  hasBugResult: boolean;
 
   formatNumber(number: number): string;
   addNumber(number: number): void;
@@ -36,6 +37,7 @@ export function MathProvider({ children }: ChildrenProps) {
   const [isCurrentNumberNegative, setIsCurrentNumberNegative] = useState(false);
   const [isCurrentNumberDecimal, setIsCurrentNumberDecimal] = useState(false);
   const [isCountFinished, setIsCountFinished] = useState(false);
+  const [hasBugResult, setHasBugResult] = useState(false);
 
   function formatNumber(number: number): string {
     const numberString = new Intl.NumberFormat().format(number);
@@ -45,6 +47,7 @@ export function MathProvider({ children }: ChildrenProps) {
 
   function addNumber(number: number): void {
     if (isCountFinished) setIsCountFinished(false);
+    if (hasBugResult) setHasBugResult(false);
 
     if (isCurrentNumberDecimal) {
       if (!currentDecimalNumber) setCurrentDecimalNumber(String(number));
@@ -61,6 +64,8 @@ export function MathProvider({ children }: ChildrenProps) {
   }
 
   function deleteNumber(): void {
+    if (hasBugResult) setHasBugResult(false);
+
     if (isCurrentNumberDecimal) {
       if (!currentDecimalNumber) resetCurrentDecimalNumber();
       else {
@@ -78,20 +83,26 @@ export function MathProvider({ children }: ChildrenProps) {
   }
 
   function getFinalResult(): void {
-    const finalResult = calcPreviousNumberByCurrentNumber();
-    const finalResultString = finalResult % 1 === 0 ? finalResult.toFixed(1) : String(finalResult);
-    const [intNumber, floatNumber] = finalResultString.split('.');
+    if (lastUsedMathOperator === '÷' && (currentNumber === 0 || currentNumber === null)) setHasBugResult(true);
+    else {
+      const finalResult = calcPreviousNumberByCurrentNumber();
+      const finalResultString = finalResult % 1 === 0 ? finalResult.toFixed(1) : String(finalResult);
+      const [intNumber, floatNumber] = finalResultString.split('.');
+
+      setIsCurrentNumberDecimal(floatNumber !== '0');
+      setCurrentNumber(Number(intNumber));
+      setCurrentDecimalNumber(floatNumber === '0' ? '' : floatNumber);
+    }
 
     setIsCountFinished(true);
     setIsCurrentNumberNegative(false);
-    setIsCurrentNumberDecimal(floatNumber !== '0');
-    setCurrentNumber(Number(intNumber));
-    setCurrentDecimalNumber(floatNumber === '0' ? '' : floatNumber);
     setPreviousNumber(null);
     setCurrentMathOperator(null);
   }
 
   function resetOperation(): void {
+    if (hasBugResult) setHasBugResult(false);
+
     setCurrentMathOperator(null);
     setPreviousNumber(null);
     setCurrentNumber(0);
@@ -165,7 +176,8 @@ export function MathProvider({ children }: ChildrenProps) {
   }
 
   useEffect(() => {
-    if (currentMathOperator === null || (currentNumber === 0 && !isCurrentNumberDecimal) || isCountFinished) return;
+    if (currentMathOperator === null || (currentNumber === 0 && !isCurrentNumberDecimal) || isCountFinished)
+      return;
 
     const newPreviousNumber = calcPreviousNumberByCurrentNumber();
 
@@ -187,6 +199,7 @@ export function MathProvider({ children }: ChildrenProps) {
         lastUsedMathOperator,
         isCurrentNumberNegative,
         isCurrentNumberDecimal,
+        hasBugResult,
         formatNumber,
         addNumber,
         getFinalResult,

@@ -28,6 +28,11 @@
     opacity: 0.8;
   }
 
+  > div:last-child span {
+    font-size: 0.7em;
+    color: #e74c3c;
+  }
+
   @media (min-width: 380px) {
     width: 360px;
   }
