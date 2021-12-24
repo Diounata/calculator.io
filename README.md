@@ -13,7 +13,7 @@
 </p>
 
 <p align='center'>
-<img src="https://github.com/Diounata/calculator.io/blob/main/.github/app-preview.png" width='500px' alt="App preview" />
+<img src="https://github.com/Diounata/calculator.io/blob/main/.github/app-preview.png" width='280px' alt="App preview" />
 </p>
  
 ## :dart: Overview
